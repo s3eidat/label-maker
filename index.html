@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; media-src 'self' data: blob:; connect-src 'self' data: blob:; worker-src 'self' blob:; manifest-src 'self'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Label Maker — Free Printable Address &amp; Product Labels on A4 and Letter Sheets | S3eidat Tools</title>
+<meta name="description" content="Print address and product labels on standard label sheets: 21, 24, 14, 40 or 65 per A4, 30, 10 or 80 per Letter, or your own rows, columns and margins in mm. Paste a list or CSV, start on a partly used sheet, preview and print. Free and private.">
+<meta property="og:title" content="Label Maker — address and product labels, positioned in mm">
+<meta property="og:description" content="Paste a list or CSV, pick your label sheet, start where the last sheet ended, print. Runs 100% in your browser.">
+<link rel="icon" href="kit/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="kit/kit.css">
+<link rel="stylesheet" href="app.css">
+<script src="kit/kit.js"></script>
+<!--s3:seo-->
+<link rel="canonical" href="https://s3eidat.github.io/label-maker/">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d0f12">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="S3eidat Tools">
+<meta property="og:url" content="https://s3eidat.github.io/label-maker/">
+<meta property="og:image" content="https://s3eidat.github.io/label-maker/screenshot.png">
+<meta property="og:image:width" content="1280"><meta property="og:image:height" content="800">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Label Maker — Print address and product labels">
+<meta name="twitter:description" content="Print address and product labels. Free, private and runs 100% in your browser: no sign-up, no uploads.">
+<meta name="twitter:image" content="https://s3eidat.github.io/label-maker/screenshot.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Label Maker", "url": "https://s3eidat.github.io/label-maker/", "description": "Print address and product labels. Free, private and runs 100% in your browser: no sign-up, no uploads.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "image": "https://s3eidat.github.io/label-maker/screenshot.png", "author": {"@type": "Person", "name": "s3eidat", "url": "https://github.com/s3eidat"}}</script>
+<!--/s3:seo-->
+</head>
+<body data-tool="label-maker">
+<main class="s3-main no-print">
+  <section class="s3-hero">
+    <h1>Label Maker</h1>
+    <p>Print address and product labels on standard label sheets, positioned to the millimetre. Paste a list or a CSV, start on a partly used sheet, and print. Nothing leaves your browser.</p>
+  </section>
+
+  <div class="lm-grid">
+    <div class="stack lm-editor">
+      <section class="card stack">
+        <div class="row between">
+          <h2>Labels</h2>
+          <div class="row">
+            <label class="btn ghost small" id="open">Open file<input type="file" accept=".csv,.tsv,.txt,text/csv,text/plain" hidden></label>
+            <button class="btn ghost small" id="sample" type="button">Sample</button>
+          </div>
+        </div>
+        <div class="seg" id="mode" role="group" aria-label="Content">
+          <button aria-pressed="true" data-v="list">List</button>
+          <button aria-pressed="false" data-v="csv">CSV / spreadsheet</button>
+          <button aria-pressed="false" data-v="same">Same label</button>
+        </div>
+        <label class="field"><span id="textLabel">One label per block, blank line between labels</span>
+          <textarea class="textarea prose" id="text" dir="auto" spellcheck="false"></textarea>
+        </label>
+        <div id="csvOpts" class="stack" hidden>
+          <label class="check"><input type="checkbox" id="header" checked> First row is a header</label>
+          <label class="field"><span>Template <span class="faint">optional: <code>{Name}</code> or <code>{1}</code>; empty puts each column on its own line</span></span>
+            <textarea class="textarea lm-tpl" id="tpl" dir="auto" spellcheck="false" placeholder="{Name}&#10;{Street}&#10;{City} {Postcode}"></textarea>
+          </label>
+          <p class="faint lm-p" id="cols"></p>
+        </div>
+        <div class="row">
+          <label class="field lm-inline" id="countWrap">How many<input class="input" id="count" type="number" min="1" max="2000" value="21"></label>
+          <label class="field lm-inline">Copies of each<input class="input" id="copies" type="number" min="1" max="100" value="1"></label>
+        </div>
+      </section>
+
+      <section class="card stack">
+        <h2>Label sheet</h2>
+        <label class="field">Sheet
+          <select class="select" id="preset"></select>
+        </label>
+        <div id="custom" class="lm-custom" hidden>
+          <label class="field">Paper<select class="select" id="cPaper"><option value="A4">A4</option><option value="Letter">Letter</option></select></label>
+          <label class="field">Columns<input class="input" id="cCols" type="number" min="1" max="12" step="1"></label>
+          <label class="field">Rows<input class="input" id="cRows" type="number" min="1" max="40" step="1"></label>
+          <label class="field">Label width mm<input class="input" id="cW" type="number" min="5" max="300" step="0.1"></label>
+          <label class="field">Label height mm<input class="input" id="cH" type="number" min="5" max="300" step="0.1"></label>
+          <label class="field">Top margin mm<input class="input" id="cTop" type="number" min="0" max="100" step="0.05"></label>
+          <label class="field">Left margin mm<input class="input" id="cLeft" type="number" min="0" max="100" step="0.05"></label>
+          <label class="field">Column gap mm<input class="input" id="cGx" type="number" min="0" max="50" step="0.05"></label>
+          <label class="field">Row gap mm<input class="input" id="cGy" type="number" min="0" max="50" step="0.05"></label>
+        </div>
+        <div class="field"><span>Start at label <b id="startNo">1</b> <span class="faint">click a used label to skip it and everything before it</span></span>
+          <div class="lm-picker" id="picker" role="group" aria-label="Start position"></div>
+        </div>
+      </section>
+
+      <section class="card stack">
+        <h2>Text</h2>
+        <div class="grid-2">
+          <label class="field">Font size<select class="select" id="size"></select></label>
+          <label class="field">Font<select class="select" id="font"><option value="sans">Sans</option><option value="serif">Serif</option><option value="mono">Monospace</option></select></label>
+        </div>
+        <div class="row">
+          <div class="seg" id="align" role="group" aria-label="Horizontal alignment">
+            <button aria-pressed="false" data-v="left">Left</button>
+            <button aria-pressed="true" data-v="center">Centre</button>
+            <button aria-pressed="false" data-v="right">Right</button>
+          </div>
+          <div class="seg" id="valign" role="group" aria-label="Vertical alignment">
+            <button aria-pressed="false" data-v="top">Top</button>
+            <button aria-pressed="true" data-v="middle">Middle</button>
+          </div>
+        </div>
+        <div class="row">
+          <label class="check"><input type="checkbox" id="bold" checked> Bold first line</label>
+          <label class="check"><input type="checkbox" id="fit" checked> Shrink long labels to fit</label>
+          <label class="check"><input type="checkbox" id="border"> Print a border</label>
+        </div>
+        <div class="grid-3">
+          <label class="field">Padding mm<input class="input" id="pad" type="number" min="0" max="15" step="0.5"></label>
+          <label class="field">Nudge → mm<input class="input" id="nx" type="number" min="-15" max="15" step="0.1"></label>
+          <label class="field">Nudge ↓ mm<input class="input" id="ny" type="number" min="-15" max="15" step="0.1"></label>
+        </div>
+        <p class="faint lm-p">Nudge moves everything if your printer feeds a little off. Print one sheet on plain paper first and hold it against a label sheet.</p>
+      </section>
+    </div>
+
+    <section class="card lm-out">
+      <div class="row between">
+        <h2>Preview</h2>
+        <span class="chip" id="status">Waiting</span>
+      </div>
+      <div class="lm-stage" id="stage"><div id="preview"></div></div>
+      <div class="row mt">
+        <button class="btn primary grow" id="print"><svg class="i"><use href="#i-file"/></svg>Print</button>
+      </div>
+      <p class="faint center">In the print dialog set scale to 100% (“Actual size”) and margins to none or default; the page itself has no margins.</p>
+    </section>
+  </div>
+</main>
+<div id="sheet" aria-hidden="true"></div>
+<script src="app.js"></script>
+</body>
+</html>
